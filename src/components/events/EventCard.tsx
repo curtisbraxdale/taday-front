@@ -1,13 +1,11 @@
 import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { 
   DropdownMenu, 
   DropdownMenuContent, 
   DropdownMenuItem, 
   DropdownMenuTrigger 
 } from '@/components/ui/dropdown-menu';
-import { PixelCalendar, PixelMapPin, PixelTag, PixelMoreHorizontal, PixelStar } from '@/components/icons/PixelIcons';
+import { PixelCalendar, PixelTag, PixelMoreHorizontal, PixelStar } from '@/components/icons/PixelIcons';
 import { Event } from '@/types';
 import { format } from 'date-fns';
 

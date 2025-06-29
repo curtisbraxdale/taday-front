@@ -1,20 +1,16 @@
-import { DivideIcon as LucideIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface NavLinkProps {
   href: string;
-  icon: LucideIcon;
   children: React.ReactNode;
+  icon?: React.ComponentType<{ className?: string }>;
   onClick?: () => void;
+  className?: string;
 }
 
-export const NavLink = ({ href, icon: Icon, children, onClick }: NavLinkProps) => {
-  const isActive = window.location.pathname === href;
-
+export const NavLink = ({ href, children, icon: Icon, onClick, className }: NavLinkProps) => {
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    window.history.pushState({}, '', href);
-    window.dispatchEvent(new PopStateEvent('popstate'));
     onClick?.();
   };
 
@@ -23,13 +19,12 @@ export const NavLink = ({ href, icon: Icon, children, onClick }: NavLinkProps) =
       href={href}
       onClick={handleClick}
       className={cn(
-        'flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200',
-        isActive
-          ? 'bg-taday-accent text-white'
-          : 'text-taday-secondary hover:bg-taday-background hover:text-taday-primary'
+        'flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-md transition-colors',
+        'text-taday-secondary hover:text-taday-primary hover:bg-muted',
+        className
       )}
     >
-      <Icon className="h-4 w-4" />
+      {Icon && <Icon className="h-4 w-4" />}
       {children}
     </a>
   );

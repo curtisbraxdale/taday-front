@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { TypewriterText } from '../dashboard/TypewriterText';
-import { PixelUser, PixelSettings as PixelSettingsIcon } from '@/components/icons/PixelIcons';
+import { PixelUser } from '@/components/icons/PixelIcons';
 import { useAuth } from '@/hooks/useAuth';
 import { useValidation } from '@/hooks/useValidation';
 import { showWin98Toast } from '@/lib/win98-toast';
@@ -106,8 +106,8 @@ export const Settings = () => {
     
     // If password wasn't changed, don't validate it
     if (!isPasswordChanged) {
-      delete validationData.password;
-      delete validationData.confirmPassword;
+      const { password, confirmPassword, ...dataWithoutPassword } = validationData;
+      Object.assign(validationData, dataWithoutPassword);
     }
 
     // Custom validation for password confirmation only if password was changed

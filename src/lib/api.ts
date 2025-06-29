@@ -118,7 +118,9 @@ async function apiRequest<T>(
     if (error instanceof ApiError) {
       throw error;
     }
-    throw new ApiError(`Network error: ${error.message}`, 0);
+    // Type assertion for unknown error
+    const err = error as Error;
+    throw new ApiError(`Network error: ${err.message}`, 0);
   }
 }
 
@@ -254,6 +256,7 @@ export const eventsApi = {
     
     const queryString = searchParams.toString();
     return apiRequest<ApiEvent[]>(`/events${queryString ? `?${queryString}` : ''}`);
+  
   },
 
   async getEvent(id: string): Promise<ApiEvent> {

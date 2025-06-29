@@ -18,7 +18,6 @@ interface TodoItemProps {
 }
 
 export const TodoItem = ({ todo, onToggle, onEdit, onDelete }: TodoItemProps) => {
-  const [isHovered, setIsHovered] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const handleEdit = () => {
@@ -35,8 +34,6 @@ export const TodoItem = ({ todo, onToggle, onEdit, onDelete }: TodoItemProps) =>
     <div 
       className="win98-card-hover flex items-start space-x-3 p-4 mb-3 rounded-none border-2 border-taday-win98-darkGray bg-white transition-all duration-200 animate-fade-in"
       style={{ borderStyle: 'inset' }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
     >
       <Checkbox 
         checked={false}
