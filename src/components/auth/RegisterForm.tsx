@@ -43,7 +43,7 @@ export const RegisterForm = ({ onToggleMode }: RegisterFormProps) => {
       const success = await register(formData);
       if (success) {
         showWin98Toast('Account created successfully!', 'success');
-        // The useAuth hook will handle the redirect
+        // The useAuth hook will handle the state update and trigger re-render
       }
       // Error handling is done in the useAuth hook
     } catch (error) {

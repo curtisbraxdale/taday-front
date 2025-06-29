@@ -74,6 +74,7 @@ export const useAuth = () => {
       localStorage.setItem("taday_user", JSON.stringify(user));
       localStorage.setItem("taday_logged_in", "true");
 
+      // Update state immediately to trigger re-render
       setAuthState({
         user,
         isLoading: false,
@@ -110,6 +111,7 @@ export const useAuth = () => {
       localStorage.setItem("taday_user", JSON.stringify(user));
       localStorage.setItem("taday_logged_in", "true");
 
+      // Update state immediately to trigger re-render
       setAuthState({
         user,
         isLoading: false,
@@ -193,12 +195,13 @@ export const useAuth = () => {
 
       // Clear user data
       localStorage.removeItem("taday_user");
+      localStorage.removeItem("taday_logged_in");
+      
       setAuthState({
         user: null,
         isLoading: false,
         isAuthenticated: false,
       });
-      localStorage.removeItem("taday_logged_in");
 
       showWin98Toast("Account deleted successfully", "success");
 
@@ -225,14 +228,15 @@ export const useAuth = () => {
       // Even if logout API fails, we should still clear local state
       console.warn("Logout API call failed:", error);
     } finally {
-      // Clear user data and show success message
+      // Clear user data and update state immediately
       localStorage.removeItem("taday_user");
+      localStorage.removeItem("taday_logged_in");
+      
       setAuthState({
         user: null,
         isLoading: false,
         isAuthenticated: false,
       });
-      localStorage.removeItem("taday_logged_in");
 
       showWin98Toast("Successfully logged out!", "success");
 

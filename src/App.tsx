@@ -24,6 +24,7 @@ function App() {
     setCurrentRoute(route);
   };
 
+  // Show loading spinner while checking authentication
   if (isLoading) {
     return (
       <div className="min-h-screen bg-taday-background flex items-center justify-center">
@@ -35,10 +36,12 @@ function App() {
     );
   }
 
+  // Show auth page if not authenticated
   if (!isAuthenticated) {
     return <AuthPage />;
   }
 
+  // Show main app if authenticated
   const renderCurrentPage = () => {
     switch (currentRoute) {
       case '/events':
