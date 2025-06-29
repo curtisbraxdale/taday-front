@@ -1,0 +1,411 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: 'Space Mono', monospace;
+  line-height: 1.6;
+  font-weight: 400;
+  color-scheme: light;
+  color: #2D3436;
+  background-color: #C0C0C0;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: #C0C0C0;
+  color: #2D3436;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply bg-taday-background text-taday-primary font-body;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-header font-semibold;
+  }
+  
+  .text-pixelated {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-taday-primary hover:bg-taday-secondary text-white font-mono py-2 px-4 rounded-none transition-colors duration-200;
+  }
+  
+  .btn-secondary {
+    @apply bg-taday-secondary hover:bg-taday-primary text-white font-mono py-2 px-4 rounded-none transition-colors duration-200;
+  }
+  
+  .btn-accent {
+    @apply bg-taday-accent hover:bg-taday-accent/90 text-white font-mono py-2 px-4 rounded-none transition-colors duration-200;
+  }
+  
+  .card-hover {
+    @apply transition-all duration-200 hover:shadow-lg hover:scale-[1.01];
+  }
+  
+  .input-field {
+    @apply w-full px-3 py-2 border border-border rounded-none bg-white text-taday-primary placeholder-taday-secondary/60 focus:outline-none focus:ring-2 focus:ring-taday-accent focus:border-transparent font-mono;
+  }
+  
+  .priority-high {
+    @apply bg-taday-error text-white;
+  }
+  
+  .priority-medium {
+    @apply bg-yellow-500 text-white;
+  }
+  
+  .priority-low {
+    @apply bg-taday-accent text-white;
+  }
+
+  /* Windows 98 style pixel icons */
+  .pixel-icon {
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+  }
+
+  .pixel-icon-sm {
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+  }
+
+  .pixel-icon-lg {
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+    width: 32px;
+    height: 32px;
+    display: inline-block;
+  }
+
+  .win98-button {
+    background: #c0c0c0;
+    border: 2px outset #c0c0c0;
+    border-radius: 0;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    padding: 4px 12px;
+    color: #000000;
+  }
+
+  .win98-button:hover {
+    background: #d0d0d0;
+  }
+
+  .win98-button:active {
+    border: 2px inset #c0c0c0;
+    background: #a0a0a0;
+  }
+
+  .win98-button:disabled {
+    background: #a0a0a0;
+    color: #808080;
+    border: 2px outset #a0a0a0;
+  }
+
+  /* Navigation button with card-like hover and mousedown effect */
+  .nav-button {
+    background: #c0c0c0;
+    border: 2px outset #c0c0c0;
+    border-radius: 0;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    padding: 4px 12px;
+    color: #000000;
+    transition: all 0.2s ease;
+  }
+
+  .nav-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 
+      2px 2px 0px #808080,
+      4px 4px 0px #606060;
+  }
+
+  .nav-button:active,
+  .nav-button.active {
+    border: 2px inset #c0c0c0;
+    background: #a0a0a0;
+    transform: translateY(1px);
+    box-shadow: 
+      1px 1px 0px #808080,
+      2px 2px 0px #606060;
+  }
+
+  .win98-card {
+    background: #c0c0c0;
+    border: 2px outset #c0c0c0;
+    border-radius: 0;
+  }
+
+  .win98-card-hover {
+    transition: all 0.2s ease;
+  }
+
+  .win98-card-hover:hover {
+    transform: translateY(-1px);
+    box-shadow: 
+      2px 2px 0px #808080,
+      4px 4px 0px #606060;
+  }
+
+  /* Windows 98 style input fields */
+  .win98-input {
+    background: #ffffff;
+    border: 2px inset #c0c0c0;
+    border-radius: 0;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    padding: 4px 8px;
+    color: #000000;
+  }
+
+  .win98-input:focus {
+    outline: none;
+    background: #000080;
+    color: #ffffff;
+    border: 2px inset #000080;
+  }
+
+  .win98-input::placeholder {
+    color: #808080;
+  }
+
+  .win98-input:focus::placeholder {
+    color: #c0c0c0;
+  }
+
+  /* Windows 98 style textarea */
+  .win98-textarea {
+    background: #ffffff;
+    border: 2px inset #c0c0c0;
+    border-radius: 0;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    padding: 4px 8px;
+    color: #000000;
+    resize: none;
+  }
+
+  .win98-textarea:focus {
+    outline: none;
+    background: #000080;
+    color: #ffffff;
+    border: 2px inset #000080;
+  }
+
+  .win98-textarea::placeholder {
+    color: #808080;
+  }
+
+  .win98-textarea:focus::placeholder {
+    color: #c0c0c0;
+  }
+
+  /* Windows 98 style labels */
+  .win98-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: #000000;
+    font-weight: normal;
+  }
+
+  /* Windows 98 style toast notification */
+  .win98-toast {
+    background: #c0c0c0;
+    border: 2px outset #c0c0c0;
+    border-radius: 0;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: #000000;
+    box-shadow: 
+      4px 4px 0px #808080,
+      8px 8px 0px #606060;
+  }
+
+  .win98-toast.success {
+    background: #c0ffc0;
+    border: 2px outset #c0ffc0;
+  }
+
+  .win98-toast.error {
+    background: #ffc0c0;
+    border: 2px outset #ffc0c0;
+  }
+
+  /* Windows 98 style dropdown menu items - WHITE BACKGROUND ON HOVER */
+  .win98-dropdown-item {
+    transition: all 0.2s ease;
+    background: transparent !important;
+    border: 1px solid transparent !important;
+    color: inherit !important;
+  }
+
+  .win98-dropdown-item:hover {
+    background: #ffffff !important;
+    border: 1px solid transparent !important;
+    color: inherit !important;
+    transform: translateY(-1px);
+    box-shadow: 
+      2px 2px 0px #808080,
+      4px 4px 0px #606060;
+  }
+
+  .win98-dropdown-item:focus {
+    background: #ffffff !important;
+    border: 1px solid transparent !important;
+    color: inherit !important;
+    transform: translateY(-1px);
+    box-shadow: 
+      2px 2px 0px #808080,
+      4px 4px 0px #606060;
+  }
+
+  /* Override any Radix UI default styles for dropdown items */
+  [data-radix-collection-item] {
+    background: transparent !important;
+    color: inherit !important;
+  }
+
+  [data-radix-collection-item]:hover {
+    background: #ffffff !important;
+    color: inherit !important;
+  }
+
+  [data-radix-collection-item]:focus {
+    background: #ffffff !important;
+    color: inherit !important;
+  }
+
+  /* Override Select component styles */
+  [data-radix-select-item] {
+    background: transparent !important;
+    color: inherit !important;
+  }
+
+  [data-radix-select-item]:hover {
+    background: #ffffff !important;
+    color: inherit !important;
+  }
+
+  [data-radix-select-item]:focus {
+    background: #ffffff !important;
+    color: inherit !important;
+  }
+
+  [data-radix-select-item][data-highlighted] {
+    background: #ffffff !important;
+    color: inherit !important;
+  }
+
+  /* Override DropdownMenu component styles */
+  [data-radix-dropdown-menu-item] {
+    background: transparent !important;
+    color: inherit !important;
+  }
+
+  [data-radix-dropdown-menu-item]:hover {
+    background: #ffffff !important;
+    color: inherit !important;
+  }
+
+  [data-radix-dropdown-menu-item]:focus {
+    background: #ffffff !important;
+    color: inherit !important;
+  }
+
+  [data-radix-dropdown-menu-item][data-highlighted] {
+    background: #ffffff !important;
+    color: inherit !important;
+  }
+
+  /* Windows 98 style modal/dialog */
+  .win98-modal {
+    background: #c0c0c0;
+    border: 2px outset #c0c0c0;
+    border-radius: 0;
+    box-shadow: 
+      4px 4px 0px #808080,
+      8px 8px 0px #606060;
+  }
+
+  /* Windows 98 style modal overlay */
+  .win98-modal-overlay {
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: none;
+  }
+}
+
+/* INVISIBLE SCROLLBAR - Maintains functionality but hides visual appearance */
+/* Webkit browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: transparent;
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Firefox */
+html {
+  scrollbar-width: none;
+}
+
+/* Internet Explorer and Edge Legacy */
+body {
+  -ms-overflow-style: none;
+}
+
+/* Focus styles for accessibility */
+.focus-visible {
+  @apply outline-none ring-2 ring-taday-accent ring-offset-2;
+}
+
+/* Animation utilities */
+.animate-in {
+  animation: fade-in 0.3s ease-out;
+}
+
+.animate-slide-in {
+  animation: slide-in 0.3s ease-out;
+}
