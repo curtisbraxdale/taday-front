@@ -21,7 +21,7 @@ export const useAuth = () => {
     const checkAuth = async () => {
       const loggedInFlag = localStorage.getItem("taday_logged_in");
       if (!loggedInFlag) {
-        // Skip refresh if we know user isn't logged in
+        // No login flag means user hasn't logged in, skip auth check
         setAuthState({
           user: null,
           isLoading: false,
@@ -31,6 +31,7 @@ export const useAuth = () => {
       }
 
       try {
+        // Try to get user info first (this will fail if no valid session)
         const apiUser = await userApi.getUser();
         const user = transformApiUser(apiUser);
         localStorage.setItem("taday_user", JSON.stringify(user));
@@ -40,17 +41,31 @@ export const useAuth = () => {
           isAuthenticated: true,
         });
       } catch (error) {
-        try {
-          await authApi.refreshToken();
-          const apiUser = await userApi.getUser();
-          const user = transformApiUser(apiUser);
-          localStorage.setItem("taday_user", JSON.stringify(user));
-          setAuthState({
-            user,
-            isLoading: false,
-            isAuthenticated: true,
-          });
-        } catch (refreshError) {
+        // If getting user fails, try refresh token only if we have the login flag
+        if (error instanceof ApiError && error.status === 401) {
+          try {
+            await authApi.refreshToken();
+            // After successful refresh, try to get user again
+            const apiUser = await userApi.getUser();
+            const user = transformApiUser(apiUser);
+            localStorage.setItem("taday_user", JSON.stringify(user));
+            setAuthState({
+              user,
+              isLoading: false,
+              isAuthenticated: true,
+            });
+          } catch (refreshError) {
+            // Refresh failed, clear everything and show login
+            localStorage.removeItem("taday_user");
+            localStorage.removeItem("taday_logged_in");
+            setAuthState({
+              user: null,
+              isLoading: false,
+              isAuthenticated: false,
+            });
+          }
+        } else {
+          // Other errors, clear everything
           localStorage.removeItem("taday_user");
           localStorage.removeItem("taday_logged_in");
           setAuthState({

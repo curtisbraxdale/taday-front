@@ -65,6 +65,9 @@ export class ApiError extends Error {
   }
 }
 
+// Track if we're currently refreshing to prevent multiple refresh attempts
+let isRefreshing = false;
+
 // Generic API request function
 async function apiRequest<T>(
   endpoint: string,
@@ -90,17 +93,26 @@ async function apiRequest<T>(
       return null as T;
     }
 
-    if (response.status === 401) {
-      // Unauthorized - try to refresh token
-      const refreshed = await refreshToken();
-      if (refreshed) {
+    if (response.status === 401 && !isRefreshing && endpoint !== "/api/refresh") {
+      // Unauthorized - try to refresh token only if we're not already refreshing
+      // and this isn't the refresh endpoint itself
+      isRefreshing = true;
+      try {
+        await refreshToken();
+        isRefreshing = false;
         // Retry the original request
         const retryResponse = await fetch(url, config);
         if (retryResponse.ok) {
+          if (retryResponse.status === 204) {
+            return null as T;
+          }
           return retryResponse.json();
         }
+        throw new ApiError("Authentication failed after refresh", 401);
+      } catch (refreshError) {
+        isRefreshing = false;
+        throw new ApiError("Authentication failed", 401);
       }
-      throw new ApiError("Authentication failed", 401);
     }
 
     if (!response.ok) {
