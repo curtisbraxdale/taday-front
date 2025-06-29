@@ -127,26 +127,26 @@ async function apiRequest<T>(
 // Authentication API
 export const authApi = {
   async login(email: string, password: string): Promise<ApiUser> {
-    return apiRequest<ApiUser>("/login", {
+    return apiRequest<ApiUser>("/api/login", {
       method: "POST",
       body: JSON.stringify({ email, password }),
     });
   },
 
   async logout(): Promise<void> {
-    return apiRequest<void>("/logout", {
+    return apiRequest<void>("/api/logout", {
       method: "POST",
     });
   },
 
   async refreshToken(): Promise<void> {
-    return apiRequest<void>("/refresh", {
+    return apiRequest<void>("/api/refresh", {
       method: "POST",
     });
   },
 
   async revokeToken(): Promise<void> {
-    return apiRequest<void>("/revoke", {
+    return apiRequest<void>("/api/revoke", {
       method: "POST",
     });
   },
@@ -155,7 +155,7 @@ export const authApi = {
 // User API
 export const userApi = {
   async getUser(): Promise<ApiUser> {
-    return apiRequest<ApiUser>("/user");
+    return apiRequest<ApiUser>("/api/user");
   },
 
   async createUser(userData: {
@@ -164,7 +164,7 @@ export const userApi = {
     password: string;
     phone_number?: string;
   }): Promise<ApiUser> {
-    return apiRequest<ApiUser>("/users", {
+    return apiRequest<ApiUser>("/api/users", {
       method: "POST",
       body: JSON.stringify(userData),
     });
@@ -176,14 +176,14 @@ export const userApi = {
     password?: string;
     phone_number?: string;
   }): Promise<ApiUser> {
-    return apiRequest<ApiUser>("/user", {
+    return apiRequest<ApiUser>("/api/user", {
       method: "PUT",
       body: JSON.stringify(userData),
     });
   },
 
   async deleteUser(): Promise<void> {
-    return apiRequest<void>("/user", {
+    return apiRequest<void>("/api/user", {
       method: "DELETE",
     });
   },
@@ -203,11 +203,11 @@ async function refreshToken(): Promise<boolean> {
 export const todosApi = {
   async getTodos(sort?: "desc"): Promise<ApiTodo[]> {
     const params = sort ? `?sort=${sort}` : "";
-    return apiRequest<ApiTodo[]>(`/todos${params}`);
+    return apiRequest<ApiTodo[]>(`/api/todos${params}`);
   },
 
   async getTodo(id: string): Promise<ApiTodo> {
-    return apiRequest<ApiTodo>(`/todos/${id}`);
+    return apiRequest<ApiTodo>(`/api/todos/${id}`);
   },
 
   async createTodo(todo: {
@@ -215,7 +215,7 @@ export const todosApi = {
     title: string;
     description?: string;
   }): Promise<ApiTodo> {
-    return apiRequest<ApiTodo>("/todos", {
+    return apiRequest<ApiTodo>("/api/todos", {
       method: "POST",
       body: JSON.stringify(todo),
     });
@@ -229,14 +229,14 @@ export const todosApi = {
       description?: string;
     },
   ): Promise<ApiTodo> {
-    return apiRequest<ApiTodo>(`/todos/${id}`, {
+    return apiRequest<ApiTodo>(`/api/todos/${id}`, {
       method: "PUT",
       body: JSON.stringify(todo),
     });
   },
 
   async deleteTodo(id: string): Promise<void> {
-    return apiRequest<void>(`/todos/${id}`, {
+    return apiRequest<void>(`/api/todos/${id}`, {
       method: "DELETE",
     });
   },
@@ -256,12 +256,12 @@ export const eventsApi = {
 
     const queryString = searchParams.toString();
     return apiRequest<ApiEvent[]>(
-      `/events${queryString ? `?${queryString}` : ""}`,
+      `/api/events${queryString ? `?${queryString}` : ""}`,
     );
   },
 
   async getEvent(id: string): Promise<ApiEvent> {
-    return apiRequest<ApiEvent>(`/events/${id}`);
+    return apiRequest<ApiEvent>(`/api/events/${id}`);
   },
 
   async createEvent(event: {
@@ -275,7 +275,7 @@ export const eventsApi = {
     recur_m: boolean;
     recur_y: boolean;
   }): Promise<ApiEvent> {
-    return apiRequest<ApiEvent>("/events", {
+    return apiRequest<ApiEvent>("/api/events", {
       method: "POST",
       body: JSON.stringify(event),
     });
@@ -295,14 +295,14 @@ export const eventsApi = {
       recur_y?: boolean;
     },
   ): Promise<ApiEvent> {
-    return apiRequest<ApiEvent>(`/events/${id}`, {
+    return apiRequest<ApiEvent>(`/api/events/${id}`, {
       method: "PUT",
       body: JSON.stringify(event),
     });
   },
 
   async deleteEvent(id: string): Promise<void> {
-    return apiRequest<void>(`/events/${id}`, {
+    return apiRequest<void>(`/api/events/${id}`, {
       method: "DELETE",
     });
   },
@@ -311,11 +311,11 @@ export const eventsApi = {
 // Tags API
 export const tagsApi = {
   async getTags(): Promise<ApiTag[]> {
-    return apiRequest<ApiTag[]>("/tags");
+    return apiRequest<ApiTag[]>("/api/tags");
   },
 
   async createTag(tag: { name: string; color: string }): Promise<ApiTag> {
-    return apiRequest<ApiTag>("/tags", {
+    return apiRequest<ApiTag>("/api/tags", {
       method: "POST",
       body: JSON.stringify(tag),
     });
@@ -328,14 +328,14 @@ export const tagsApi = {
       color?: string;
     },
   ): Promise<ApiTag> {
-    return apiRequest<ApiTag>(`/tags/${id}`, {
+    return apiRequest<ApiTag>(`/api/tags/${id}`, {
       method: "PUT",
       body: JSON.stringify(tag),
     });
   },
 
   async deleteTag(id: string): Promise<void> {
-    return apiRequest<void>(`/tags/${id}`, {
+    return apiRequest<void>(`/api/tags/${id}`, {
       method: "DELETE",
     });
   },
@@ -344,18 +344,18 @@ export const tagsApi = {
 // Event Tags API
 export const eventTagsApi = {
   async getEventTags(eventId: string): Promise<ApiTag[]> {
-    return apiRequest<ApiTag[]>(`/events/${eventId}/tags`);
+    return apiRequest<ApiTag[]>(`/api/events/${eventId}/tags`);
   },
 
   async addTagToEvent(eventId: string, tagId: string): Promise<ApiEventTag> {
-    return apiRequest<ApiEventTag>(`/events/${eventId}/tags`, {
+    return apiRequest<ApiEventTag>(`/api/events/${eventId}/tags`, {
       method: "POST",
       body: JSON.stringify({ tag_id: tagId }),
     });
   },
 
   async removeTagFromEvent(eventId: string, tagId: string): Promise<void> {
-    return apiRequest<void>(`/events/${eventId}/tags/${tagId}`, {
+    return apiRequest<void>(`/api/events/${eventId}/tags/${tagId}`, {
       method: "DELETE",
     });
   },
