@@ -167,7 +167,7 @@ export const authApi = {
 // User API
 export const userApi = {
   async getUser(): Promise<ApiUser> {
-    return apiRequest<ApiUser>("/api/user");
+    return apiRequest<ApiUser>("/api/users");
   },
 
   async createUser(userData: {
@@ -188,14 +188,14 @@ export const userApi = {
     password?: string;
     phone_number?: string;
   }): Promise<ApiUser> {
-    return apiRequest<ApiUser>("/api/user", {
+    return apiRequest<ApiUser>("/api/users", {
       method: "PUT",
       body: JSON.stringify(userData),
     });
   },
 
   async deleteUser(): Promise<void> {
-    return apiRequest<void>("/api/user", {
+    return apiRequest<void>("/api/users", {
       method: "DELETE",
     });
   },
