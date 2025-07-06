@@ -30,6 +30,10 @@ export const TodoItem = ({ todo, onToggle, onEdit, onDelete }: TodoItemProps) =>
     setIsDropdownOpen(false);
   };
 
+  // Check if due date is meaningful (not epoch date and not null/undefined)
+  const hasMeaningfulDueDate = todo.dueDate && 
+    todo.dueDate.getTime() > new Date('1970-01-02').getTime(); // Allow some buffer from epoch
+
   return (
     <div 
       className="win98-card-hover flex items-start space-x-3 p-4 mb-3 rounded-none border-2 border-taday-win98-darkGray bg-white transition-all duration-200 animate-fade-in"
@@ -52,10 +56,10 @@ export const TodoItem = ({ todo, onToggle, onEdit, onDelete }: TodoItemProps) =>
           </p>
         )}
         
-        {todo.dueDate && (
+        {hasMeaningfulDueDate && (
           <div className="mt-2">
             <span className="text-xs text-taday-secondary font-mono">
-              Due {format(todo.dueDate, 'MMM dd, yyyy')}
+              Due {format(todo.dueDate!, 'MMM dd, yyyy')}
             </span>
           </div>
         )}
