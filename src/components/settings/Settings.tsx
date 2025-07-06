@@ -270,7 +270,7 @@ export const Settings = () => {
           <div className="space-y-4">
             {/* Name */}
             <div className="space-y-2">
-              <label htmlFor="name" className="win98-label">Full Name</label>
+              <label htmlFor="name" className="win98-label">Username</label>
               <input
                 id="name"
                 type="text"

@@ -32,7 +32,10 @@ export const LoginForm = ({ onToggleMode }: LoginFormProps) => {
       const success = await login(formData.email, formData.password);
       if (success) {
         showWin98Toast('Welcome back!', 'success');
-        // The useAuth hook will handle the state update and trigger re-render
+        // Redirect to dashboard after successful login
+        setTimeout(() => {
+          window.location.href = '/';
+        }, 1000);
       }
       // Error handling is done in the useAuth hook
     } catch (error) {

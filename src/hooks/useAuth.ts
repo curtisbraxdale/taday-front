@@ -220,9 +220,9 @@ export const useAuth = () => {
 
       showWin98Toast("Account deleted successfully", "success");
 
-      // Auto-refresh page after 1 second to redirect to auth
+      // Redirect to auth page after 1 second
       setTimeout(() => {
-        window.location.reload();
+        window.location.href = '/auth';
       }, 1000);
 
       return true;
@@ -255,9 +255,9 @@ export const useAuth = () => {
 
       showWin98Toast("Successfully logged out!", "success");
 
-      // Auto-refresh page after 1 second to redirect to auth
+      // Redirect to auth page after 1 second
       setTimeout(() => {
-        window.location.reload();
+        window.location.href = '/auth';
       }, 1000);
     }
   };
