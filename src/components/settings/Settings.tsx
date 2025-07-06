@@ -8,7 +8,7 @@ import { showWin98Toast } from '@/lib/win98-toast';
 const validationRules = {
   name: { required: true, minLength: 2 },
   email: { required: true, email: true },
-  phone: { phone: true },
+  phone: { required: true, phone: true }, // Made phone required in settings too
   password: { 
     minLength: 8,
     pattern: /^(?=.*[A-Z])(?=.*\d).{8,}$/,
@@ -163,7 +163,7 @@ export const Settings = () => {
       } = {
         name: formData.name,
         email: formData.email,
-        phone: formData.phone || undefined,
+        phone: formData.phone,
       };
 
       // Only include password if it was changed

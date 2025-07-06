@@ -10,7 +10,7 @@ interface RegisterFormProps {
 const validationRules = {
   name: { required: true, minLength: 2 },
   email: { required: true, email: true },
-  phone: { phone: true },
+  phone: { required: true, phone: true }, // Made phone required
   password: { 
     required: true, 
     minLength: 8,
@@ -113,7 +113,7 @@ export const RegisterForm = ({ onToggleMode }: RegisterFormProps) => {
         </div>
 
         <div className="space-y-2">
-          <label htmlFor="phone" className="win98-label">Phone (optional)</label>
+          <label htmlFor="phone" className="win98-label">Phone Number</label>
           <input
             id="phone"
             type="tel"
