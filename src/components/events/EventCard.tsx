@@ -25,11 +25,13 @@ export const EventCard = ({ event, onEdit, onDelete, onViewDetails }: EventCardP
     onViewDetails?.(event);
   };
 
-  const handleEdit = () => {
+  const handleEdit = (e: React.MouseEvent) => {
+    e.stopPropagation();
     onEdit?.(event);
   };
 
-  const handleDelete = () => {
+  const handleDelete = (e: React.MouseEvent) => {
+    e.stopPropagation();
     onDelete?.(event.id);
   };
 

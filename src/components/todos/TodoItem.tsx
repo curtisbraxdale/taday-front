@@ -20,12 +20,14 @@ interface TodoItemProps {
 export const TodoItem = ({ todo, onToggle, onEdit, onDelete }: TodoItemProps) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  const handleEdit = () => {
+  const handleEdit = (e: React.MouseEvent) => {
+    e.stopPropagation();
     onEdit?.(todo);
     setIsDropdownOpen(false);
   };
 
-  const handleDelete = () => {
+  const handleDelete = (e: React.MouseEvent) => {
+    e.stopPropagation();
     onDelete?.(todo.id);
     setIsDropdownOpen(false);
   };
