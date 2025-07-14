@@ -20,15 +20,21 @@ interface TodoItemProps {
 export const TodoItem = ({ todo, onToggle, onEdit, onDelete }: TodoItemProps) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  const handleEdit = () => {
+  const handleEdit = (e: React.MouseEvent) => {
+    e.stopPropagation();
     onEdit?.(todo);
     setIsDropdownOpen(false);
   };
 
-  const handleDelete = () => {
+  const handleDelete = (e: React.MouseEvent) => {
+    e.stopPropagation();
     onDelete?.(todo.id);
     setIsDropdownOpen(false);
   };
+
+  // Check if due date is meaningful (not epoch date and not null/undefined)
+  const hasMeaningfulDueDate = todo.dueDate && 
+    todo.dueDate.getTime() > new Date('1970-01-02').getTime(); // Allow some buffer from epoch
 
   return (
     <div 
@@ -52,10 +58,10 @@ export const TodoItem = ({ todo, onToggle, onEdit, onDelete }: TodoItemProps) =>
           </p>
         )}
         
-        {todo.dueDate && (
+        {hasMeaningfulDueDate && (
           <div className="mt-2">
             <span className="text-xs text-taday-secondary font-mono">
-              Due {format(todo.dueDate, 'MMM dd, yyyy')}
+              Due {format(todo.dueDate!, 'MMM dd, yyyy')}
             </span>
           </div>
         )}

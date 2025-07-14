@@ -118,27 +118,27 @@ export function transformApiTodo(apiTodo: ApiTodo): Todo {
   };
 }
 
-// Transform frontend todo to API todo
+// Transform frontend todo to API todo - only send date if dueDate exists
 export function transformTodoToApi(todo: Omit<Todo, 'id'>): {
   date: string;
   title: string;
   description?: string;
 } {
   return {
-    date: todo.dueDate ? todo.dueDate.toISOString() : new Date().toISOString(),
+    date: todo.dueDate ? todo.dueDate.toISOString() : new Date('1970-01-01').toISOString(), // Use epoch date as placeholder when no due date
     title: todo.title,
     description: todo.description,
   };
 }
 
-// Transform update data for todos
+// Transform update data for todos - only send date if dueDate exists
 export function transformTodoUpdateToApi(todo: Todo): {
   date?: string;
   title?: string;
   description?: string;
 } {
   return {
-    date: todo.dueDate ? todo.dueDate.toISOString() : undefined,
+    date: todo.dueDate ? todo.dueDate.toISOString() : new Date('1970-01-01').toISOString(), // Use epoch date as placeholder when no due date
     title: todo.title,
     description: todo.description,
   };

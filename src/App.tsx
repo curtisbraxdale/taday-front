@@ -5,6 +5,8 @@ import { Dashboard } from '@/components/dashboard/Dashboard';
 import { Events } from '@/components/events/Events';
 import { Todos } from '@/components/todos/Todos';
 import { Settings } from '@/components/settings/Settings';
+import { SuccessPage } from '@/components/stripe/SuccessPage';
+import { CancelPage } from '@/components/stripe/CancelPage';
 import { useAuth } from '@/hooks/useAuth';
 
 function App() {
@@ -44,6 +46,10 @@ function App() {
   // Show main app if authenticated
   const renderCurrentPage = () => {
     switch (currentRoute) {
+      case '/success':
+        return <SuccessPage />;
+      case '/cancel':
+        return <CancelPage />;
       case '/events':
         return <Events />;
       case '/todos':
@@ -56,9 +62,15 @@ function App() {
   };
 
   return (
-    <Layout currentRoute={currentRoute} onNavigate={handleNavigate}>
-      {renderCurrentPage()}
-    </Layout>
+    <>
+      {currentRoute === '/success' || currentRoute === '/cancel' ? (
+        renderCurrentPage()
+      ) : (
+        <Layout currentRoute={currentRoute} onNavigate={handleNavigate}>
+          {renderCurrentPage()}
+        </Layout>
+      )}
+    </>
   );
 }
 

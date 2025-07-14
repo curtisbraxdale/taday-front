@@ -10,7 +10,7 @@ interface RegisterFormProps {
 const validationRules = {
   name: { required: true, minLength: 2 },
   email: { required: true, email: true },
-  phone: { phone: true },
+  phone: { required: true, phone: true }, // Made phone required
   password: { 
     required: true, 
     minLength: 8,
@@ -43,7 +43,10 @@ export const RegisterForm = ({ onToggleMode }: RegisterFormProps) => {
       const success = await register(formData);
       if (success) {
         showWin98Toast('Account created successfully!', 'success');
-        // The useAuth hook will handle the state update and trigger re-render
+        // Redirect to dashboard after successful registration
+        setTimeout(() => {
+          window.location.href = '/';
+        }, 1000);
       }
       // Error handling is done in the useAuth hook
     } catch (error) {
@@ -78,11 +81,11 @@ export const RegisterForm = ({ onToggleMode }: RegisterFormProps) => {
       
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="space-y-2">
-          <label htmlFor="name" className="win98-label">Full Name</label>
+          <label htmlFor="name" className="win98-label">Username</label>
           <input
             id="name"
             type="text"
-            placeholder="Enter your full name"
+            placeholder="Enter your username"
             value={formData.name}
             onChange={(e) => handleInputChange('name', e.target.value)}
             className={`win98-input w-full ${errors.name ? 'border-taday-error' : ''}`}
@@ -110,7 +113,7 @@ export const RegisterForm = ({ onToggleMode }: RegisterFormProps) => {
         </div>
 
         <div className="space-y-2">
-          <label htmlFor="phone" className="win98-label">Phone (optional)</label>
+          <label htmlFor="phone" className="win98-label">Phone Number</label>
           <input
             id="phone"
             type="tel"
