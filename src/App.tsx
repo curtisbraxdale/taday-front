@@ -14,6 +14,9 @@ function App() {
   const [currentRoute, setCurrentRoute] = useState('/');
 
   useEffect(() => {
+    // Set initial route from URL
+    setCurrentRoute(window.location.pathname);
+    
     const handlePopState = () => {
       setCurrentRoute(window.location.pathname);
     };
@@ -38,8 +41,8 @@ function App() {
     );
   }
 
-  // Show auth page if not authenticated
-  if (!isAuthenticated) {
+  // Show auth page if not authenticated (except for success/cancel pages)
+  if (!isAuthenticated && currentRoute !== '/success' && currentRoute !== '/cancel') {
     return <AuthPage />;
   }
 
@@ -66,9 +69,13 @@ function App() {
       {currentRoute === '/success' || currentRoute === '/cancel' ? (
         renderCurrentPage()
       ) : (
+        isAuthenticated ? (
         <Layout currentRoute={currentRoute} onNavigate={handleNavigate}>
           {renderCurrentPage()}
         </Layout>
+        ) : (
+          <AuthPage />
+        )
       )}
     </>
   );
