@@ -222,7 +222,7 @@ export const useAuth = () => {
 
       // Redirect to auth page after 1 second
       setTimeout(() => {
-        window.location.href = '/auth';
+        window.location.href = '/';
       }, 1000);
 
       return true;
@@ -257,7 +257,7 @@ export const useAuth = () => {
 
       // Redirect to auth page after 1 second
       setTimeout(() => {
-        window.location.href = '/auth';
+        window.location.href = '/';
       }, 1000);
     }
   };
