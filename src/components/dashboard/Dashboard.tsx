@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { PixelCalendar, PixelCheckbox, PixelPlus } from '@/components/icons/PixelIcons';
+import { PixelCalendar, PixelCheckbox, PixelPlus, PixelStar } from '@/components/icons/PixelIcons';
 import { TypewriterText } from './TypewriterText';
 import { CountdownTimer } from './CountdownTimer';
 import { AddEventModal } from '@/components/events/AddEventModal';
@@ -9,6 +9,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useEvents } from '@/hooks/useEvents';
 import { useTodos } from '@/hooks/useTodos';
 import { Event, Todo } from '@/types';
+import { showWin98Toast } from '@/lib/win98-toast';
 
 export const Dashboard = () => {
   const { user } = useAuth();
@@ -18,17 +19,51 @@ export const Dashboard = () => {
   const [showCountdown, setShowCountdown] = useState(false);
   const [isAddEventModalOpen, setIsAddEventModalOpen] = useState(false);
   const [isAddTodoModalOpen, setIsAddTodoModalOpen] = useState(false);
+  const [isSubscribing, setIsSubscribing] = useState(false);
   
   const handleQuickAction = (action: string) => {
     if (action === 'add-event') {
       setIsAddEventModalOpen(true);
     } else if (action === 'add-todo') {
       setIsAddTodoModalOpen(true);
+    } else if (action === 'subscribe') {
+      handleSubscribe();
     } else {
       console.log(`Quick action: ${action}`);
     }
   };
 
+  const handleSubscribe = async () => {
+    setIsSubscribing(true);
+    
+    try {
+      const response = await fetch('https://taday-api.fly.dev/api/checkout', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to create checkout session');
+      }
+
+      const data = await response.json();
+      
+      // Redirect to Stripe checkout
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        throw new Error('No checkout URL received');
+      }
+    } catch (error) {
+      console.error('Subscription error:', error);
+      showWin98Toast('Failed to start subscription process', 'error');
+    } finally {
+      setIsSubscribing(false);
+    }
+  };
   const handleAddEvent = async (event: Omit<Event, 'id'>) => {
     const success = await createEvent(event);
     if (success) {
@@ -79,7 +114,7 @@ export const Dashboard = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-lg mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
           <Card className="win98-card win98-card-hover animate-fade-in aspect-square flex flex-col">
             <CardHeader className="text-center pb-4 flex-1 flex flex-col justify-center">
               <div className="mx-auto mb-3">
@@ -101,6 +136,27 @@ export const Dashboard = () => {
             </CardContent>
           </Card>
 
+          <Card className="win98-card win98-card-hover animate-fade-in aspect-square flex flex-col" style={{ animationDelay: '50ms' }}>
+            <CardHeader className="text-center pb-4 flex-1 flex flex-col justify-center">
+              <div className="mx-auto mb-3">
+                <PixelStar size="lg" />
+              </div>
+              <CardTitle className="font-header text-taday-primary">Subscribe</CardTitle>
+            </CardHeader>
+            <CardContent className="text-center pb-6">
+              <p className="text-taday-secondary mb-4 text-sm font-mono">
+                Support development and get premium features
+              </p>
+              <button 
+                onClick={() => handleQuickAction('subscribe')}
+                className="win98-button w-full flex items-center justify-center gap-2 font-mono"
+                disabled={isSubscribing}
+              >
+                <PixelStar size="sm" />
+                {isSubscribing ? 'Loading...' : 'Subscribe'}
+              </button>
+            </CardContent>
+          </Card>
           <Card className="win98-card win98-card-hover animate-fade-in aspect-square flex flex-col" style={{ animationDelay: '100ms' }}>
             <CardHeader className="text-center pb-4 flex-1 flex flex-col justify-center">
               <div className="mx-auto mb-3">
