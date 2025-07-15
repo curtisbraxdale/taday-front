@@ -14,8 +14,9 @@ function App() {
   const [currentRoute, setCurrentRoute] = useState('/');
 
   useEffect(() => {
-    // Set initial route from URL
-    setCurrentRoute(window.location.pathname);
+    // Set initial route from URL and handle potential routing issues
+    const path = window.location.pathname;
+    setCurrentRoute(path);
     
     const handlePopState = () => {
       setCurrentRoute(window.location.pathname);
@@ -27,6 +28,7 @@ function App() {
 
   const handleNavigate = (route: string) => {
     setCurrentRoute(route);
+    window.history.pushState({}, '', route);
   };
 
   // Show loading spinner while checking authentication
@@ -41,12 +43,7 @@ function App() {
     );
   }
 
-  // Show auth page if not authenticated (except for success/cancel pages)
-  if (!isAuthenticated && currentRoute !== '/success' && currentRoute !== '/cancel') {
-    return <AuthPage />;
-  }
-
-  // Show main app if authenticated
+  // Route rendering logic
   const renderCurrentPage = () => {
     switch (currentRoute) {
       case '/success':
@@ -54,30 +51,31 @@ function App() {
       case '/cancel':
         return <CancelPage />;
       case '/events':
-        return <Events />;
+        return isAuthenticated ? <Events /> : <AuthPage />;
       case '/todos':
-        return <Todos />;
+        return isAuthenticated ? <Todos /> : <AuthPage />;
       case '/settings':
-        return <Settings />;
+        return isAuthenticated ? <Settings /> : <AuthPage />;
       default:
-        return <Dashboard />;
+        return isAuthenticated ? <Dashboard /> : <AuthPage />;
     }
   };
 
   return (
-    <>
-      {currentRoute === '/success' || currentRoute === '/cancel' ? (
+    <div>
+      {(currentRoute === '/success' || currentRoute === '/cancel') ? (
+        // Show success/cancel pages without layout, regardless of auth status
         renderCurrentPage()
-      ) : (
-        isAuthenticated ? (
+      ) : isAuthenticated ? (
+        // Show main app with layout for authenticated users
         <Layout currentRoute={currentRoute} onNavigate={handleNavigate}>
           {renderCurrentPage()}
         </Layout>
-        ) : (
-          <AuthPage />
-        )
+      ) : (
+        // Show auth page for unauthenticated users on protected routes
+        <AuthPage />
       )}
-    </>
+    </div>
   );
 }
 
