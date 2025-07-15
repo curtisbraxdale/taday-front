@@ -14,7 +14,7 @@ function App() {
   const [currentRoute, setCurrentRoute] = useState('/');
 
   useEffect(() => {
-    // Set initial route from URL and handle potential routing issues
+    // Set initial route from URL
     const path = window.location.pathname;
     setCurrentRoute(path);
     
@@ -28,7 +28,6 @@ function App() {
 
   const handleNavigate = (route: string) => {
     setCurrentRoute(route);
-    window.history.pushState({}, '', route);
   };
 
   // Show loading spinner while checking authentication
@@ -64,15 +63,15 @@ function App() {
   return (
     <div>
       {(currentRoute === '/success' || currentRoute === '/cancel') ? (
-        // Show success/cancel pages without layout, regardless of auth status
+        // Show success/cancel pages without layout
         renderCurrentPage()
       ) : isAuthenticated ? (
-        // Show main app with layout for authenticated users
+        // Show main app with layout
         <Layout currentRoute={currentRoute} onNavigate={handleNavigate}>
           {renderCurrentPage()}
         </Layout>
       ) : (
-        // Show auth page for unauthenticated users on protected routes
+        // Show auth page for unauthenticated users
         <AuthPage />
       )}
     </div>
