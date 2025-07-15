@@ -21,6 +21,7 @@ export const Settings = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [showSubtext, setShowSubtext] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [showCancelConfirm, setShowCancelConfirm] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -221,6 +222,41 @@ export const Settings = () => {
     }
   };
 
+  const handleCancelSubscription = async () => {
+    if (!showCancelConfirm) {
+      setShowCancelConfirm(true);
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const response = await fetch('https://taday-api.fly.dev/api/cancel', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to cancel subscription');
+      }
+
+      showWin98Toast('Subscription cancelled successfully', 'success');
+      
+      // Redirect to homepage after 1 second
+      setTimeout(() => {
+        window.location.href = '/';
+      }, 1000);
+    } catch (error) {
+      console.error('Cancel subscription error:', error);
+      showWin98Toast('Failed to cancel subscription', 'error');
+    } finally {
+      setIsLoading(false);
+      setShowCancelConfirm(false);
+    }
+  };
+
   // Get display values for each field
   const getDisplayValue = (field: string) => {
     if (field === 'password') {
@@ -384,6 +420,37 @@ export const Settings = () => {
               >
                 Discard Changes
               </button>
+            </div>
+          )}
+
+          {/* Subscription Management */}
+          {!isEditing && (
+            <div className="pt-4 border-t-2 border-taday-win98-darkGray" style={{ borderStyle: 'inset' }}>
+              <h3 className="text-sm font-header font-bold text-taday-primary mb-3">Manage Subscription</h3>
+              <div className="space-y-2">
+                <p className="text-xs text-taday-secondary font-mono">
+                  Cancel your subscription at any time. You'll retain access until the end of your billing period.
+                </p>
+                <button
+                  onClick={handleCancelSubscription}
+                  className={`win98-button w-full font-mono ${showCancelConfirm ? 'bg-taday-error text-white' : ''}`}
+                  disabled={isLoading}
+                >
+                  {showCancelConfirm 
+                    ? (isLoading ? 'Cancelling...' : 'Click again to confirm cancellation')
+                    : 'Cancel Subscription'
+                  }
+                </button>
+                {showCancelConfirm && (
+                  <button
+                    onClick={() => setShowCancelConfirm(false)}
+                    className="win98-button w-full font-mono"
+                    disabled={isLoading}
+                  >
+                    Keep Subscription
+                  </button>
+                )}
+              </div>
             </div>
           )}
 
